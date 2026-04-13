@@ -1,0 +1,44 @@
+# Minimal Dockerfile for testing SelfLearningAgent
+FROM python:3.11-slim
+
+ENV NODE_ENV=production
+ENV WORKSPACE_DIR=/app
+ENV COPAW_WORKING_DIR=/app/working
+ENV COPAW_SECRET_DIR=/app/working.secret
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --fix-missing \
+    curl \
+    git \
+    vim \
+    chromium \
+    libnss3 \
+    libgbm1 \
+  && rm -rf /var/lib/apt/lists/* \
+  && apt-get clean
+
+# Playwright settings
+ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+ENV COPAW_RUNNING_IN_CONTAINER=1
+
+WORKDIR ${WORKSPACE_DIR}
+
+RUN python3 -m venv venv
+ENV PATH="/app/venv/bin:$PATH"
+
+COPY pyproject.toml setup.py README.md ./
+COPY src ./src
+COPY console-dist/ ./src/copaw/console/
+
+RUN pip install --no-cache-dir --timeout 300 -i https://mirrors.aliyun.com/pypi/simple/ .
+
+RUN copaw init --defaults --accept-security
+
+ENV COPAW_PORT=8088
+
+EXPOSE 8088
+
+# Simple entrypoint - run copaw app with host 0.0.0.0 for Docker
+CMD ["copaw", "app", "--host", "0.0.0.0"]
