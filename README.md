@@ -1,6 +1,8 @@
 <div align="center">
 
-# CoPaw
+# CoPaw (Fork with SelfLearningAgent)
+
+> **Note**: This is a personal fork of [CoPaw](https://github.com/agentscope-ai/CoPaw) with an additional **SelfLearningAgent** feature for autonomous learning capabilities.
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-black.svg?logo=github)](https://github.com/agentscope-ai/CoPaw)
 [![PyPI](https://img.shields.io/pypi/v/copaw?color=3775A9&label=PyPI&logo=pypi)](https://pypi.org/project/copaw/)
@@ -22,9 +24,45 @@
   <img src="https://img.alicdn.com/imgextra/i2/O1CN014TIqyO1U5wDiSbFfA_!!6000000002467-2-tps-816-192.png" alt="CoPaw Logo" width="120">
 </p>
 
-<p align="center"><b>Works for you, grows with you.</b></p>
+<p align="center"><b>Works for you, grows with you — and learns with you.</b></p>
 
 </div>
+
+## 🆕 SelfLearningAgent Feature
+
+This fork extends CoPaw with a **SelfLearningAgent** capability that enables the agent to learn autonomously:
+
+- **Memory Nudge** — Automatically review conversations and save important information to memory
+- **Pattern Extraction** — Identify reusable patterns from successful task completions  
+- **Skill Auto-Creation** — Create new skills from learned patterns
+- **Background Learning** — Asynchronous learning that doesn't interrupt user interactions
+
+### Configuration
+
+SelfLearningAgent can be configured via the Console UI at **Settings → Agent Config → Self Learning**:
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `enabled` | Enable/disable self-learning | `true` |
+| `memory_nudge_interval` | Turns between memory reviews | `10` |
+| `skill_nudge_interval` | Tool iterations between skill reviews | `5` |
+| `max_skills` | Maximum skills to maintain | `50` |
+| `enable_pattern_extraction` | Extract reusable patterns | `true` |
+| `enable_skill_creation` | Auto-create skills from patterns | `true` |
+| `background_learning` | Run learning asynchronously | `true` |
+| `min_pattern_confidence` | Minimum confidence for patterns | `0.5` |
+| `auxiliary_model` | Model for learning tasks (optional) | Uses main model |
+
+### Technical Documentation
+
+See the following documentation for implementation details:
+
+- [SelfLearningAgent 实现文档](doc/SelfLearningAgent实现文档.md) — Implementation guide
+- [Hermes_run_agent详解](doc/Hermes_run_agent详解.md) — Reference architecture from Hermes Agent
+- [Hermes vs CoPaw对比分析](doc/Hermes_vs_CoPaw对比分析.md) — Architecture comparison
+- [CoPawAgent源码详解](doc/CoPawAgent源码详解.md) — CoPaw agent internals
+
+---
 
 Your personal AI assistant — easy to install, deploy locally or in the cloud, connect across channels, extend with ease.
 
@@ -57,6 +95,8 @@ Your personal AI assistant — easy to install, deploy locally or in the cloud, 
 ---
 
 ## News
+
+[2026-04-13] **SelfLearningAgent Feature Added** — This fork now includes autonomous learning capabilities: Memory Nudge (auto-save conversation insights), Pattern Extraction (identify reusable patterns), and Skill Auto-Creation (create skills from patterns). Configurable via Console UI at **Settings → Agent Config → Self Learning**.
 
 [2026-04-09] We released v1.0.2! See the [v1.0.2 Release Notes](https://agentscope-ai.github.io/CoPaw/release-notes) for the full changelog.
 

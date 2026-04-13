@@ -107,3 +107,11 @@ src/.hypothesis/
 
 # Worktrees
 .worktrees/
+/hermes-agent-main/
+
+# Doc files not referenced in README
+/doc/Agent层替换方案对比.md
+/doc/SQLite存储替换规划.md
+/doc/agent.json示例.json
+/doc/app架构详解.md
+/doc/workspace模块详解.md

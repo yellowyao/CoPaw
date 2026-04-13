@@ -9,6 +9,7 @@ import {
   ToolResultCompactCard,
   MemorySummaryCard,
   EmbeddingConfigCard,
+  LearningConfigCard,
 } from "./components";
 import { PageHeader } from "@/components/PageHeader";
 import styles from "./index.module.less";
@@ -32,6 +33,7 @@ function AgentConfigPage() {
 
   const llmRetryEnabled = Form.useWatch("llm_retry_enabled", form) ?? true;
   const maxInputLength = Form.useWatch("max_input_length", form) ?? 0;
+  const learningEnabled = Form.useWatch(["learning", "enabled"], form) ?? true;
 
   if (loading) {
     return (
@@ -70,6 +72,8 @@ function AgentConfigPage() {
               savingTimezone={savingTimezone}
               onTimezoneChange={handleTimezoneChange}
             />
+
+            <LearningConfigCard learningEnabled={learningEnabled} />
 
             <LlmRetryCard llmRetryEnabled={llmRetryEnabled} />
 
