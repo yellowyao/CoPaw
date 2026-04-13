@@ -1,6 +1,8 @@
 <div align="center">
 
-# CoPaw
+# CoPaw（SelfLearningAgent 対応 Fork）
+
+> **注記**：これは [CoPaw](https://github.com/agentscope-ai/CoPaw) の個人 Fork で、**SelfLearningAgent** 自律学習機能を追加しています。
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-black.svg?logo=github)](https://github.com/agentscope-ai/CoPaw)
 [![PyPI](https://img.shields.io/pypi/v/copaw?color=3775A9&label=PyPI&logo=pypi)](https://pypi.org/project/copaw/)
@@ -22,9 +24,45 @@
   <img src="https://img.alicdn.com/imgextra/i2/O1CN014TIqyO1U5wDiSbFfA_!!6000000002467-2-tps-816-192.png" alt="CoPaw Logo" width="120">
 </p>
 
-<p align="center"><b>あなたのために働き、あなたとともに成長する。</b></p>
+<p align="center"><b>あなたのために働き、あなたとともに成長する — そしてあなたとともに学ぶ。</b></p>
 
 </div>
+
+## 🆕 SelfLearningAgent 機能
+
+この Fork は CoPaw に **SelfLearningAgent** 自律学習能力を追加します：
+
+- **Memory Nudge（メモリ nudging）** — 会話を自動的に振り返り、重要な情報をメモリに保存
+- **Pattern Extraction（パターン抽出）** — 成功したタスク完了から再利用可能なパターンを識別
+- **Skill Auto-Creation（スキル自動作成）** — 学習したパターンから新しいスキルを作成
+- **Background Learning（バックグラウンド学習）** — ユーザー操作を中断しない非同期学習
+
+### 設定
+
+コンソール UI の **設定 → エージェント設定 → 自己学習** で設定：
+
+| オプション | 説明 | デフォルト |
+|------------|------|------------|
+| `enabled` | 自己学習の有効/無効 | `true` |
+| `memory_nudge_interval` | メモリレビューの会話ターン間隔 | `10` |
+| `skill_nudge_interval` | スキルレビューのツール iteration 間隔 | `5` |
+| `max_skills` | 最大管理スキル数 | `50` |
+| `enable_pattern_extraction` | 再利用可能なパターンの抽出 | `true` |
+| `enable_skill_creation` | パターンからスキルを自動作成 | `true` |
+| `background_learning` | 非同期で学習を実行 | `true` |
+| `min_pattern_confidence` | パターンの最小確信度 | `0.5` |
+| `auxiliary_model` | 学習タスク用モデル（オプション） | メインモデル使用 |
+
+### 技術ドキュメント
+
+実装詳細は以下のドキュメントを参照：
+
+- [SelfLearningAgent 实现文档](doc/SelfLearningAgent实现文档.md) — 実装ガイド
+- [Hermes_run_agent详解](doc/Hermes_run_agent详解.md) — Hermes Agent 参照アーキテクチャ
+- [Hermes vs CoPaw对比分析](doc/Hermes_vs_CoPaw对比分析.md) — アーキテクチャ比較
+- [CoPawAgent源码详解](doc/CoPawAgent源码详解.md) — CoPaw エージェント内部構造
+
+---
 
 あなた専用の AI アシスタント — インストール簡単、ローカルまたはクラウド展開、多チャネル接続、能力拡張可能。
 
@@ -57,6 +95,8 @@
 ---
 
 ## ニュース
+
+[2026-04-13] **SelfLearningAgent 機能追加** — この Fork に自律学習能力を追加：Memory Nudge（会話洞察の自動保存）、Pattern Extraction（再利用可能なパターンの識別）、Skill Auto-Creation（パターンからのスキル作成）。コンソール UI の **設定 → エージェント設定 → 自己学習** で設定可能。
 
 [2026-04-09] v1.0.2 をリリースしました。詳細は [v1.0.2 リリースノート](https://agentscope-ai.github.io/CoPaw/release-notes)をご覧ください。
 

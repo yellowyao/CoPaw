@@ -441,6 +441,67 @@ class MemorySummaryConfig(BaseModel):
     )
 
 
+class AgentLearningConfig(BaseModel):
+    """Learning configuration for self-learning agent behavior.
+
+    Controls automatic learning features including memory review,
+    pattern extraction, and skill auto-creation.
+    """
+
+    enabled: bool = Field(
+        default=True,
+        description="Whether self-learning is enabled for this agent (default: enabled)",
+    )
+
+    memory_nudge_interval: int = Field(
+        default=10,
+        ge=1,
+        le=100,
+        description="Number of user turns before memory review (default: 10)",
+    )
+
+    skill_nudge_interval: int = Field(
+        default=5,
+        ge=1,
+        le=50,
+        description="Number of tool iterations before skill review (default: 5)",
+    )
+
+    enable_pattern_extraction: bool = Field(
+        default=True,
+        description="Whether to extract patterns from conversations",
+    )
+
+    enable_skill_creation: bool = Field(
+        default=True,
+        description="Whether to auto-create skills from patterns",
+    )
+
+    background_learning: bool = Field(
+        default=True,
+        description="Whether learning runs in background (non-blocking)",
+    )
+
+    auxiliary_model: Optional[str] = Field(
+        default=None,
+        description="Model used for pattern extraction (default: use main model)",
+    )
+
+    max_skills: int = Field(
+        default=50,
+        ge=10,
+        le=200,
+        description="Maximum number of auto-created skills",
+    )
+
+    min_pattern_confidence: float = Field(
+        default=0.5,
+        ge=0.0,
+        le=1.0,
+        description="Minimum confidence threshold for pattern extraction",
+    )
+
+
 class AgentsRunningConfig(BaseModel):
     """Agent runtime behavior configuration."""
 
@@ -581,6 +642,11 @@ class AgentsRunningConfig(BaseModel):
         ),
     )
 
+    learning: AgentLearningConfig = Field(
+        default_factory=AgentLearningConfig,
+        description="Self-learning agent configuration",
+    )
+
     @property
     def memory_compact_reserve(self) -> int:
         """Memory compact reserve size (tokens)."""
@@ -699,6 +765,10 @@ class AgentProfileConfig(BaseModel):
     security: Optional["SecurityConfig"] = Field(
         default=None,
         description="Security configuration for this agent",
+    )
+    learning: Optional["AgentLearningConfig"] = Field(
+        default=None,
+        description="Learning configuration for self-learning agent",
     )
 
 

@@ -1,6 +1,8 @@
 <div align="center">
 
-# CoPaw
+# CoPaw (Fork с SelfLearningAgent)
+
+> **Примечание**：Это личный форк [CoPaw](https://github.com/agentscope-ai/CoPaw) с дополнительной функцией **SelfLearningAgent** для автономного обучения.
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-black.svg?logo=github)](https://github.com/agentscope-ai/CoPaw)
 [![PyPI](https://img.shields.io/pypi/v/copaw?color=3775A9&label=PyPI&logo=pypi)](https://pypi.org/project/copaw/)
@@ -22,9 +24,45 @@
   <img src="https://img.alicdn.com/imgextra/i2/O1CN014TIqyO1U5wDiSbFfA_!!6000000002467-2-tps-816-192.png" alt="CoPaw Logo" width="120">
 </p>
 
-<p align="center"><b>Понимает вас, всегда с вами.</b></p>
+<p align="center"><b>Понимает вас, всегда с вами — и учится вместе с вами.</b></p>
 
 </div>
+
+## 🆕 Функция SelfLearningAgent
+
+Этот форк расширяет CoPaw с помощью **SelfLearningAgent** для автономного обучения:
+
+- **Memory Nudge (память)** — Автоматический просмотр диалогов и сохранение важной информации в память
+- **Pattern Extraction (паттерны)** — Выявление повторно используемых паттернов из успешных задач
+- **Skill Auto-Creation (автосоздание навыков)** — Создание новых навыков из изученных паттернов
+- **Background Learning (фоновое обучение)** — Асинхронное обучение без прерывания взаимодействия с пользователем
+
+### Конфигурация
+
+Настраивается через консоль UI: **Настройки → Конфигурация агента → Самообучение**:
+
+| Опция | Описание | По умолчанию |
+|-------|----------|--------------|
+| `enabled` | Включить/выключить самообучение | `true` |
+| `memory_nudge_interval` | Интервал диалогов для просмотра памяти | `10` |
+| `skill_nudge_interval` | Интервал итераций инструментов для просмотра навыков | `5` |
+| `max_skills` | Максимальное количество навыков | `50` |
+| `enable_pattern_extraction` | Выявление повторно используемых паттернов | `true` |
+| `enable_skill_creation` | Автоматическое создание навыков из паттернов | `true` |
+| `background_learning` | Асинхронное выполнение обучения | `true` |
+| `min_pattern_confidence` | Минимальная уверенность для паттернов | `0.5` |
+| `auxiliary_model` | Модель для задач обучения (опционально) | Основная модель |
+
+### Техническая документация
+
+Детали реализации в следующих документах:
+
+- [SelfLearningAgent 实现文档](doc/SelfLearningAgent实现文档.md) — Руководство по реализации
+- [Hermes_run_agent详解](doc/Hermes_run_agent详解.md) — Ссылочная архитектура Hermes Agent
+- [Hermes vs CoPaw对比分析](doc/Hermes_vs_CoPaw对比分析.md) — Сравнение архитектур
+- [CoPawAgent源码详解](doc/CoPawAgent源码详解.md) — Внутреннее устройство CoPaw агента
+
+---
 
 Ваш персональный AI-ассистент — простая установка, развертывание локально или в облаке, подключение через любые каналы, легкое расширение возможностей.
 
@@ -57,6 +95,8 @@
 ---
 
 ## Новости
+
+[2026-04-13] **Добавлена функция SelfLearningAgent** — Этот форк теперь включает возможности автономного обучения: Memory Nudge (автосохранение выводов из диалогов), Pattern Extraction (выявление повторно используемых паттернов), Skill Auto-Creation (создание навыков из паттернов). Настраивается через консоль UI: **Настройки → Конфигурация агента → Самообучение**.
 
 [2026-04-09] Выпущена версия v1.0.2! Полный список изменений — в [примечаниях к выпуску v1.0.2](https://agentscope-ai.github.io/CoPaw/release-notes).
 

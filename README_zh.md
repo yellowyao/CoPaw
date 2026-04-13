@@ -1,6 +1,8 @@
 <div align="center">
 
-# CoPaw
+# CoPaw（带 SelfLearningAgent 的 Fork）
+
+> **说明**：这是 [CoPaw](https://github.com/agentscope-ai/CoPaw) 的个人 Fork，新增了 **SelfLearningAgent** 自主学习功能。
 
 [![GitHub 仓库](https://img.shields.io/badge/GitHub-仓库-black.svg?logo=github)](https://github.com/agentscope-ai/CoPaw)
 [![PyPI](https://img.shields.io/pypi/v/copaw?color=3775A9&label=PyPI&logo=pypi)](https://pypi.org/project/copaw/)
@@ -22,9 +24,45 @@
   <img src="https://img.alicdn.com/imgextra/i2/O1CN014TIqyO1U5wDiSbFfA_!!6000000002467-2-tps-816-192.png" alt="CoPaw Logo" width="120">
 </p>
 
-<p align="center"><b>懂你所需，伴你左右。</b></p>
+<p align="center"><b>懂你所需，伴你左右 — 并与你一同学习成长。</b></p>
 
 </div>
+
+## 🆕 SelfLearningAgent 功能
+
+本 Fork 扩展了 CoPaw 的 **SelfLearningAgent** 自主学习能力：
+
+- **Memory Nudge（记忆提醒）** — 自动回顾对话并保存重要信息到记忆
+- **Pattern Extraction（模式提取）** — 从成功的任务完成中识别可复用的模式
+- **Skill Auto-Creation（技能自动创建）** — 从学习到的模式创建新技能
+- **Background Learning（后台学习）** — 异步学习，不打断用户交互
+
+### 配置
+
+通过控制台 UI 的 **设置 → 智能体配置 → 自我学习** 进行配置：
+
+| 选项 | 描述 | 默认值 |
+|------|------|--------|
+| `enabled` | 启用/禁用自主学习 | `true` |
+| `memory_nudge_interval` | 记忆回顾的对话轮次间隔 | `10` |
+| `skill_nudge_interval` | 技能回顾的工具迭代间隔 | `5` |
+| `max_skills` | 最大维护技能数 | `50` |
+| `enable_pattern_extraction` | 提取可复用模式 | `true` |
+| `enable_skill_creation` | 从模式自动创建技能 | `true` |
+| `background_learning` | 异步执行学习 | `true` |
+| `min_pattern_confidence` | 模式的最小置信度 | `0.5` |
+| `auxiliary_model` | 学习任务的模型（可选） | 使用主模型 |
+
+### 技术文档
+
+实现细节请参阅以下文档：
+
+- [SelfLearningAgent 实现文档](doc/SelfLearningAgent实现文档.md) — 实现指南
+- [Hermes_run_agent详解](doc/Hermes_run_agent详解.md) — Hermes Agent 参考架构
+- [Hermes vs CoPaw对比分析](doc/Hermes_vs_CoPaw对比分析.md) — 架构对比
+- [CoPawAgent源码详解](doc/CoPawAgent源码详解.md) — CoPaw 智能体内部机制
+
+---
 
 你的 AI 个人助理；安装极简、本地与云上均可部署；支持多端接入、能力轻松扩展。
 
@@ -57,6 +95,8 @@
 ---
 
 ## 新闻
+
+[2026-04-13] **SelfLearningAgent 功能新增** — 本 Fork 现已包含自主学习能力：Memory Nudge（自动保存对话洞察）、Pattern Extraction（识别可复用模式）、Skill Auto-Creation（从模式创建技能）。可通过控制台 UI 的 **设置 → 智能体配置 → 自我学习** 进行配置。
 
 [2026-04-09] 我们发布了 v1.0.2！完整更新说明见 [v1.0.2 发布说明](https://agentscope-ai.github.io/CoPaw/release-notes)。
 

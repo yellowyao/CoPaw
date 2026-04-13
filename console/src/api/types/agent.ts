@@ -45,6 +45,18 @@ export interface EmbeddingConfig {
   max_batch_size: number;
 }
 
+export interface AgentLearningConfig {
+  enabled: boolean;
+  memory_nudge_interval: number;
+  skill_nudge_interval: number;
+  enable_pattern_extraction: boolean;
+  enable_skill_creation: boolean;
+  background_learning: boolean;
+  auxiliary_model?: string | null;
+  max_skills: number;
+  min_pattern_confidence: number;
+}
+
 export interface AgentsRunningConfig {
   max_iters: number;
   llm_retry_enabled: boolean;
@@ -63,4 +75,5 @@ export interface AgentsRunningConfig {
   memory_summary: MemorySummaryConfig;
   embedding_config: EmbeddingConfig;
   memory_manager_backend: "remelight";
+  learning: AgentLearningConfig;
 }

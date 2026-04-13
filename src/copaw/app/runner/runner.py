@@ -30,11 +30,12 @@ from .session import SafeJSONSession
 from .utils import build_env_context
 from ..channels.schema import DEFAULT_CHANNEL
 from ...agents.react_agent import CoPawAgent
+from ...agents.learning_agent import SelfLearningAgent, LearningConfig
 from ...exceptions import convert_model_exception
 from ...agents.utils.file_handling import (
     read_text_file_with_encoding_fallback,
 )
-from ...config.config import load_agent_config
+from ...config.config import load_agent_config, AgentLearningConfig
 from ...constant import (
     TOOL_GUARD_APPROVAL_TIMEOUT_SECONDS,
     WORKING_DIR,
@@ -437,30 +438,74 @@ class AgentRunner(Runner):
 
             logger.debug(f"Enabled MCP: {mcp_clients}")
 
-            agent = CoPawAgent(
-                agent_config=agent_config,
-                env_context=env_context,
-                mcp_clients=mcp_clients,
-                memory_manager=self.memory_manager,
-                request_context={
-                    "session_id": session_id,
-                    "user_id": user_id,
-                    "channel": channel,
-                    "agent_id": self.agent_id,
-                    **(
-                        {
-                            "forced_tool_call_json": json.dumps(
-                                approved_tool_call,
-                                ensure_ascii=False,
-                            ),
-                        }
-                        if approved_tool_call
-                        else {}
-                    ),
-                },
-                workspace_dir=self.workspace_dir,
-                task_tracker=self._task_tracker,
-            )
+            # Check if self-learning is enabled
+            learning_config: AgentLearningConfig | None = agent_config.learning
+            if learning_config and learning_config.enabled:
+                # Use SelfLearningAgent with learning capabilities
+                learning_cfg = LearningConfig(
+                    memory_nudge_interval=learning_config.memory_nudge_interval,
+                    skill_nudge_interval=learning_config.skill_nudge_interval,
+                    enable_pattern_extraction=learning_config.enable_pattern_extraction,
+                    enable_skill_creation=learning_config.enable_skill_creation,
+                    background_learning=learning_config.background_learning,
+                    auxiliary_model=learning_config.auxiliary_model,
+                )
+                logger.info(
+                    f"Using SelfLearningAgent with config: "
+                    f"memory_nudge={learning_cfg.memory_nudge_interval}, "
+                    f"skill_nudge={learning_cfg.skill_nudge_interval}"
+                )
+                agent = SelfLearningAgent(
+                    agent_config=agent_config,
+                    learning_config=learning_cfg,
+                    env_context=env_context,
+                    mcp_clients=mcp_clients,
+                    memory_manager=self.memory_manager,
+                    request_context={
+                        "session_id": session_id,
+                        "user_id": user_id,
+                        "channel": channel,
+                        "agent_id": self.agent_id,
+                        **(
+                            {
+                                "forced_tool_call_json": json.dumps(
+                                    approved_tool_call,
+                                    ensure_ascii=False,
+                                ),
+                            }
+                            if approved_tool_call
+                            else {}
+                        ),
+                    },
+                    workspace_dir=self.workspace_dir,
+                    task_tracker=self._task_tracker,
+                )
+            else:
+                # Use standard CoPawAgent
+                agent = CoPawAgent(
+                    agent_config=agent_config,
+                    env_context=env_context,
+                    mcp_clients=mcp_clients,
+                    memory_manager=self.memory_manager,
+                    request_context={
+                        "session_id": session_id,
+                        "user_id": user_id,
+                        "channel": channel,
+                        "agent_id": self.agent_id,
+                        **(
+                            {
+                                "forced_tool_call_json": json.dumps(
+                                    approved_tool_call,
+                                    ensure_ascii=False,
+                                ),
+                            }
+                            if approved_tool_call
+                            else {}
+                        ),
+                    },
+                    workspace_dir=self.workspace_dir,
+                    task_tracker=self._task_tracker,
+                )
             await agent.register_mcp_clients()
             agent.set_console_output_enabled(enabled=False)
 
